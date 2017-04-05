@@ -17,6 +17,6 @@ Jetpack's interface has changed a lot in the past few releases. You can learn mo
 
 ## Are there other ways to customize the Jetpack plugin?
 
-Sure! I regularly post about little tips to customize Jetpack on my blog. [You should follow me!](https://jeremy.hu/tag/jetpack/
+Sure! I regularly post about little tips to customize Jetpack on my blog. [You should follow me!](https://jeremy.hu/tag/jetpack/)
 
 You can also learn more about all the hooks available in Jetpack in [the official code reference](https://developer.jetpack.com/).
