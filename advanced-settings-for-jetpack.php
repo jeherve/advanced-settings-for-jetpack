@@ -4,7 +4,7 @@
  * Plugin URI: http://jetpack.com
  * Description: Add links to Advanced Jetpack Settings in your dashboard.
  * Author: Jeremy Herve
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author URI: https://jeremy.hu
  * License: GPL2+
  * Text Domain: advanced-settings-for-jetpack
@@ -45,6 +45,7 @@ function advanced_settings_jetpack_submenu() {
 	add_action( "admin_head-$hook",          array( $jetpack_settings, 'admin_head' ) );
 	add_action( "admin_print_styles-$hook",  array( $jetpack_settings, 'admin_styles' ) );
 	add_action( "admin_print_scripts-$hook", array( $jetpack_settings, 'admin_scripts' ) );
+	add_action( "admin_print_styles-$hook",  array( $jetpack_settings, 'additional_styles' ) );
 }
 add_action( 'jetpack_admin_menu', 'advanced_settings_jetpack_submenu', 11 );
 
