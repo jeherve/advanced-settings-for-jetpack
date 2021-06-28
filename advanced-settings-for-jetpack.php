@@ -4,7 +4,7 @@
  * Plugin URI: http://jetpack.com
  * Description: Add links to Advanced Jetpack Settings in your dashboard.
  * Author: Jeremy Herve
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author URI: https://jeremy.hu
  * License: GPL2+
  * Text Domain: advanced-settings-for-jetpack
@@ -12,6 +12,8 @@
  *
  * @package Advanced Settings for Jetpack
  */
+
+use Automattic\Jetpack\Status;
 
 /**
  * Add a new Jetpack submenu item linking to the old Module list.
@@ -23,29 +25,22 @@ function advanced_settings_jetpack_submenu() {
 		return;
 	}
 
-	jetpack_require_lib( 'admin-pages/class.jetpack-settings-page' );
-	$jetpack_settings = new Jetpack_Settings_Page;
-	$jetpack_settings->add_actions();
-
-	$hook = add_submenu_page(
-		'jetpack',
-		__( 'Advanced Settings', 'advanced-settings-for-jetpack' ),
-		__( 'Advanced Settings', 'advanced-settings-for-jetpack' ),
-		'jetpack_manage_modules',
-		'jetpack_modules',
-		array(
-			$jetpack_settings,
-			'render',
-		)
-	);
-
-	// This uses a `don't show if not connected` class so we need to add these manually.
-	add_action( "load-$hook",                array( $jetpack_settings, 'admin_help' ) );
-	add_action( "load-$hook",                array( $jetpack_settings, 'admin_page_load' ) );
-	add_action( "admin_head-$hook",          array( $jetpack_settings, 'admin_head' ) );
-	add_action( "admin_print_styles-$hook",  array( $jetpack_settings, 'admin_styles' ) );
-	add_action( "admin_print_scripts-$hook", array( $jetpack_settings, 'admin_scripts' ) );
-	add_action( "admin_print_styles-$hook",  array( $jetpack_settings, 'additional_styles' ) );
+	// Only show the page when the site is connected or in offline mode.
+	if (
+		Jetpack::is_connection_ready()
+		|| ( new Status() )->is_offline_mode()
+	) {
+		add_submenu_page(
+			'jetpack',
+			esc_html__( 'Advanced Settings', 'advanced-settings-for-jetpack' ),
+			esc_html__( 'Advanced Settings', 'advanced-settings-for-jetpack' ),
+			'jetpack_manage_modules',
+			'jetpack_modules',
+			admin_url( 'admin.php?page=jetpack_modules' ),
+			null,
+			6
+		);
+	}
 }
 add_action( 'jetpack_admin_menu', 'advanced_settings_jetpack_submenu', 11 );
 
@@ -55,7 +50,7 @@ add_action( 'jetpack_admin_menu', 'advanced_settings_jetpack_submenu', 11 );
  * @since 1.0.0
  */
 function advanced_settings_jetpack_dashlink() {
-	wp_enqueue_script( 'jetpack-advanced-settings', plugins_url( 'append-link.js', __FILE__ ), array( 'jquery' ), '1.0.0' );
+	wp_enqueue_script( 'jetpack-advanced-settings', plugins_url( 'append-link.js', __FILE__ ), array( 'jquery' ), '1.1.0' );
 
 	$link_info = array(
 		'href' => 'admin.php?page=jetpack_modules',
